@@ -9,9 +9,51 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-    
+    <div id="buttons"></div> 
+    <div id="search">
+        <input id="newTopic" type="text" placeholder="Add your own topic!">
+    </div>
+    <div id="gifs"></div> 
 </body>
-    <script>
-    
-    </script>
+<script>
+    var topics = ["cars", "food", "airplanes", "trees", "stairs", "animals", "water", "paper", "camping", "sunrise"];
+
+    for(var i = 0; i < topics.length; i++){
+        var newbtn = $("<button>" + topics[i] + "</button>").attr("class", topics[i]);
+        $("#buttons").append(newbtn); 
+    } 
+
+    var newTopic = $("#newTopic").val().trim();
+    //topics.push(newTopic);
+
+    //searchGiphy("trending?");
+
+    //on button id click get class of this button and use search giphy function to populate page with embded_url
+    $("#buttons").click(function(){
+        var search = $(this).attr("class");
+        searchGiphy(search);
+    })
+    //data[""0""].embed_url
+
+
+    //search giphy for query then populate page with 10 still gifs
+    //only works for "trending?" query
+
+    function searchGiphy(query){
+        var limit = "&limit=10"
+        var APIkey = "api_key=dc6zaTOxFJmzC";
+        //var CORSproxy = "https://cors-anywhere.herokuapp.com/";
+        var queryURL = "https://api.giphy.com/v1/gifs/"+ query + APIkey + limit;
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+            $("#gifs").append('<img class="gif" src="' + response.data[0].embed_url + '">');
+            //did not get to stop and play functionality as there is still alot that is still not working sadly
+        });
+
+    }
+
+</script>
 </html>
